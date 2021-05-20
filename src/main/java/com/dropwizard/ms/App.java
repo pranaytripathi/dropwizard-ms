@@ -4,6 +4,7 @@
 package com.dropwizard.ms;
 
 import com.dropwizard.ms.api.UserDetailsResource;
+import com.dropwizard.ms.metrics.HealthCheckMetric;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -27,7 +28,10 @@ public class App extends Application<AppConfiguration> {
     public void run(AppConfiguration configuration, Environment environment) {
         final UserDetailsResource resource = new UserDetailsResource(configuration.getTemplate(),
                 configuration.getDefaultName());
+        final HealthCheckMetric healthCheckMetric = new HealthCheckMetric(configuration.getTemplate());
+        environment.healthChecks().register("template",healthCheckMetric);
         environment.jersey().register(resource);
+
     }
 
 }
