@@ -7,16 +7,27 @@
  */
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.0.0"
 }
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+version = '1.0.0'
+mainClassName='com.dropwizard.ms.App'
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
+
+//apply plugin: 'com.github.johnrengelman.shadow'
+
 dependencies {
+    implementation 'io.dropwizard:dropwizard-core:2.0.21'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.3'
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13.1'
 
@@ -24,7 +35,13 @@ dependencies {
     implementation 'com.google.guava:guava:30.0-jre'
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'dropwizard.ms.App'
+
+shadowJar {
+    archivesBaseName = "dropwizard-app"
+}
+
+build.dependsOn(shadowJar)
+
+run {
+    args 'server', 'app.yml'
 }
