@@ -26,12 +26,10 @@ public class App extends Application<AppConfiguration> {
 
     @Override
     public void run(AppConfiguration configuration, Environment environment) {
-        final UserDetailsResource resource = new UserDetailsResource(configuration.getTemplate(),
-                configuration.getDefaultName());
+        final UserDetailsResource resource = new UserDetailsResource();
         final HealthCheckMetric healthCheckMetric = new HealthCheckMetric(configuration.getTemplate());
         environment.healthChecks().register("template",healthCheckMetric);
         environment.jersey().register(resource);
-
     }
 
 }

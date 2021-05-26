@@ -27,7 +27,4 @@ public class UserData {
     static void setUserData(UserDetails userData) {
         userDataSource.putIfAbsent(userData.getId(), userData);
     }
-
-
-
 }
