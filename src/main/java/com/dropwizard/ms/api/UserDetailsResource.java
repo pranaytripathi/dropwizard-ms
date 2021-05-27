@@ -24,7 +24,6 @@ public class UserDetailsResource {
     @GET
     @Timed
     public UserDetails getUserDetails(@QueryParam("id") Integer id) {
-
         return UserData.getUserData(id);
     }
 }
