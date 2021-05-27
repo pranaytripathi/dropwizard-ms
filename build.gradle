@@ -5,6 +5,14 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/7.0.1/userguide/building_java_projects.html
  */
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.16'
+    }
+}
 
 plugins {
     id 'java'
@@ -12,6 +20,7 @@ plugins {
 }
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'com.google.protobuf'
 
 
 version = '1.0.0'
@@ -24,15 +33,34 @@ repositories {
 
 
 //apply plugin: 'com.github.johnrengelman.shadow'
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.0.0"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
 
 dependencies {
     implementation 'io.dropwizard:dropwizard-core:2.0.21'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.3'
-    // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13.1'
+    implementation 'com.google.protobuf:protobuf-java:3.15.3'
+    implementation 'io.dropwizard.modules:dropwizard-protobuf:2.0.7-1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.0-jre'
+}
+
+compileJava.dependsOn {
+    generateProto
 }
 
 
@@ -45,3 +73,8 @@ build.dependsOn(shadowJar)
 run {
     args 'server', 'app.yml'
 }
+
+test {
+    useJUnitPlatform()
+}
+
