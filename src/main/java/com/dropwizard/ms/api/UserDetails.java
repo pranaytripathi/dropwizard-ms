@@ -10,9 +10,6 @@ public class UserDetails {
     private String name, userName;
     private Integer id;
 
-    public UserDetails() {
-
-    }
 
     public UserDetails(Integer id, String name, String userName) {
         this.id = id;

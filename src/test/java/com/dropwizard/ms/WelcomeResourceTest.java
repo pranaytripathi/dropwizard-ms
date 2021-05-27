@@ -5,6 +5,7 @@ import com.dropwizard.ms.api.WelcomeResource;
 import com.dropwizard.ms.api.rpc.Common;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WelcomeResourceTest {
     private WelcomeResource res = new WelcomeResource();
@@ -18,8 +19,7 @@ public class WelcomeResourceTest {
                         .setId(1)
                         .build();
         var response = res.postResponse(request);
-        System.out.println(response.getMessage());
         assertNotNull(response.getMessage());
+        assertTrue(response.getMessage().contains("Have a drink"));
     }
-
 }
